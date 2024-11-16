@@ -1,0 +1,29 @@
+{
+  "name": "rentify",
+  "version": "1.0.0",
+  "description": "An online rental marketplace for equipment with chatroom-based bidding",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "rental",
+    "marketplace",
+    "chatroom",
+    "bidding"
+  ],
+  "author": "Aman Verma",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.6.0",
+    "express": "^4.21.1",
+    "mongoose": "^5.13.22",
+    "socket.io": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "@types/socket.io": "^3.0.1",
+    "typescript": "^5.6.3"
+  }
+}

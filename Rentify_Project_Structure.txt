@@ -1,0 +1,47 @@
+
+Rentify Project Structure
+
+Rentify/
+│
+├── client/                  # Frontend React Application
+│   ├── public/              # Static files
+│   │   └── index.html       # Main HTML file for React
+│   ├── src/
+│   │   ├── assets/          # Images, icons, etc.
+│   │   ├── components/      # Reusable React components
+│   │   │   ├── Chatroom.js  # Chatroom component for real-time communication
+│   │   │   ├── ItemCard.js  # Card component to display each rental item
+│   │   │   └── Alert.js     # Component for alert messages
+│   │   ├── pages/           # Page components
+│   │   │   ├── Home.js      # Homepage with list of rental items
+│   │   │   ├── Login.js     # Login page
+│   │   │   ├── ItemForm.js  # Page for creating/editing items
+│   │   │   └── ChatPage.js  # Chatroom page for each item
+│   │   ├── services/        # API services for frontend-backend communication
+│   │   │   └── api.js       # Contains functions for calling backend API endpoints
+│   │   ├── App.js           # Main React app file
+│   │   ├── index.js         # Main entry point for React
+│   │   └── styles/          # CSS or SCSS files
+│   └── package.json         # Dependencies for React
+│
+├── server/                  # Backend API with Express
+│   ├── controllers/         # Logic for handling API requests
+│   │   ├── authController.js  # Handles login/logout functionality
+│   │   ├── itemController.js  # Handles item CRUD operations
+│   │   └── chatController.js  # Manages chatroom and bidding logic
+│   ├── models/              # MongoDB models
+│   │   ├── User.js          # User schema
+│   │   ├── Item.js          # Item schema
+│   │   └── Chat.js          # Chatroom/bid schema
+│   ├── routes/              # API routes
+│   │   ├── authRoutes.js    # Routes for authentication
+│   │   ├── itemRoutes.js    # Routes for item management
+│   │   └── chatRoutes.js    # Routes for chatroom and bidding
+│   ├── config/              # Configuration files
+│   │   └── db.js            # MongoDB connection setup
+│   ├── utils/               # Utility functions
+│   ├── app.js               # Main Express application setup
+│   ├── server.js            # Server entry point
+│   └── package.json         # Dependencies for Express
+│
+└── README.md                # Project documentation
