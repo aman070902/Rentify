@@ -26,4 +26,7 @@ app.use((err, req, res, next) => {
     console.error(err.message);
     res.status(500).send('Server Error');
 });
-exports.default = app;
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
