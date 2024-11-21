@@ -1,31 +1,27 @@
 import express from 'express';
-import { connectDB } from './config/db';
-import authRoutes from './routes/authRoutes';
-import itemRoutes from './routes/itemRoutes';
+import testRoutes from './routes/testRoutes'; // Ensure this exists
+import authRoutes from './routes/authRoutes'; // Import authRoutes
 
 const app = express();
-const PORT = 3000;
-
-// Connect to database
-connectDB();
+const PORT = 3001;
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/items', itemRoutes);
+app.use('/test', testRoutes); // Register test routes
+app.use('/auth', authRoutes); // Register auth routes under "/auth"
 
-// Default route
+// Default route for testing server
 app.get('/', (req, res) => {
-  res.send('Server is running!');
+    res.send('Server is running!');
 });
 
-// Error handling middleware
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.message);
-  res.status(500).send('Server Error');
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
 
 export default app;
+
