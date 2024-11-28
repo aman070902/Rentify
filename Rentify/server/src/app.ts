@@ -1,36 +1,31 @@
 import express from 'express';
-import { connectDB } from './config/db'; // Import the database connection
-import testRoutes from './routes/testRoutes'; // Ensure this exists
-import authRoutes from './routes/authRoutes'; // Import authRoutes
+import { connectDB } from './config/db';
 import dotenv from 'dotenv';
-import cors from 'cors'; // Import CORS
+import authRoutes from './routes/authRoutes';
+import cors from 'cors';
+
 
 dotenv.config();
-
-console.log("MONGO_URI:", process.env.MONGO_URI); // Add this line to verify MONGO_URI is being read
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Connect to MongoDB
-connectDB()
-  .then(() => console.log("Connected to MongoDB successfully"))
-  .catch((error) => console.error("MongoDB connection failed:", error)); // Call the function to connect to the database
-
-// Middleware
-app.use(cors({ origin: 'http://localhost:3000' })); // Allow requests from React frontend
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: 'http://localhost:3000' }));
 
-// Routes
-app.use('/test', testRoutes); // Register test routes
-app.use('/auth', authRoutes); // Register auth routes under "/auth"
 
-// Default route for testing server
+connectDB();
+
 app.get('/', (req, res) => {
-    res.send('Server is running!');
+  res.send('API is running...');
 });
 
-// Export the app
+app.use('/auth', authRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+
 export default app;
 

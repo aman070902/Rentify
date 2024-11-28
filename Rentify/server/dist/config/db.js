@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectDB = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
+//for loading environment variable
+dotenv_1.default.config();
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const conn = yield mongoose_1.default.connect(process.env.MONGO_URI || '', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        const conn = yield mongoose_1.default.connect(process.env.MONGO_URI || '');
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     }
     catch (error) {

@@ -37,24 +37,28 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.registerUser = registerUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Login request received with body:", req.body); // Log request body
     const { email, password } = req.body;
     try {
-        // Find the user by email
         const user = yield User_1.default.findOne({ email });
+        console.log("User found:", user); // Log if user is found
         if (!user) {
+            console.log("User not found");
             return res.status(404).json({ message: 'User not found' });
         }
-        // Validate the password
         const isPasswordValid = yield bcryptjs_1.default.compare(password, user.password);
+        console.log("Password validation result:", isPasswordValid); // Log password validation result
         if (!isPasswordValid) {
+            console.log("Invalid password");
             return res.status(400).json({ message: 'Invalid credentials' });
         }
-        // Generate a JWT token
         const token = jsonwebtoken_1.default.sign({ id: user._id }, process.env.JWT_SECRET || 'default_secret', // Replace 'default_secret' with a real secret in production
         { expiresIn: '1h' });
+        console.log("Token generated:", token); // Log token generation
         return res.status(200).json({ token });
     }
     catch (error) {
+        console.error("Error during login:", error); // Log any server error
         return res.status(500).json({ message: 'Server error' });
     }
 });
