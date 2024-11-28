@@ -4,11 +4,32 @@ function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Register submitted:", { username, email, password });
-    alert("Registration successful!"); // Placeholder for server integration
+    try {
+      const response = await fetch("http://localhost:3001/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 201) {
+        setMessage("Registration successful!");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+      } else {
+        setMessage(data.message || "Registration failed!");
+      }
+    } catch (error) {
+      setMessage("An error occurred while registering. Please try again.");
+    }
   };
 
   return (
@@ -47,6 +68,7 @@ function Register() {
         </div>
         <button type="submit">Register</button>
       </form>
+      {message && <p>{message}</p>}
     </div>
   );
 }

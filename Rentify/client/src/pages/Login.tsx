@@ -1,34 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+interface LoginProps {
+  setUser: React.Dispatch<React.SetStateAction<{ username: string; email: string } | null>>;
+}
+
+const Login: React.FC<LoginProps> = ({ setUser }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Login successful:', data);
-        setSuccess(true);
-        setError('');
+        console.log("Login successful:", data);
+        setUser(data.user);
+        setError("");
+        navigate("/dashboard");
       } else {
         const errorData = await response.json();
-        setError(errorData.message || 'Login failed');
+        setError(errorData.message || "Login failed");
       }
     } catch (err) {
-      setError('Something went wrong!');
+      setError("Something went wrong!");
       console.error(err);
     }
   };
@@ -57,8 +63,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>Login successful!</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
