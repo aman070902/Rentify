@@ -6,16 +6,20 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Chat from "../pages/Chat";
 import Dashboard from "../pages/Dashboard";
+import ItemUploadForm from "../pages/ItemUploadForm";
 import "./App.css";
 
+interface User {
+  username: string;
+  email: string;
+}
+
 function App() {
-    // Initialize user state with data from localStorage
-    const [user, setUser] = useState<{ username: string; email: string } | null>(() => {
+    const [user, setUser] = useState<User | null>(() => {
         const storedUser = localStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : null;
+        return storedUser ? JSON.parse(storedUser) as User : null;
     });
 
-    // Sync user state with localStorage whenever it changes
     useEffect(() => {
         if (user) {
             localStorage.setItem("user", JSON.stringify(user));
@@ -24,22 +28,20 @@ function App() {
         }
     }, [user]);
 
+    // Directly pass the user to the component
+    const getAuthenticatedComponent = (Component: React.ComponentType<{ user: User }>) => {
+        return user ? <Component user={user} /> : <Navigate to="/login" />;
+    };
+
     return (
         <Router>
-            <Header user={user} setUser={setUser} /> {/* Pass both user and setUser */}
+            <Header user={user} setUser={setUser} />
             <Routes>
-                {/* Redirect logged-in users to the dashboard */}
-                <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login setUser={setUser} />} />
-                <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register />} />
-                
-                {/* Protect chat and dashboard routes */}
-                <Route path="/chat" element={user ? <Chat /> : <Navigate to="/login" />} />
-                <Route
-                    path="/dashboard"
-                    element={user ? <Dashboard user={user} /> : <Navigate to="/login" />}
-                />
-                
-                {/* Default fallback */}
+                <Route path="/login" element={!user ? <Login setUser={setUser} /> : <Navigate to="/dashboard" />} />
+                <Route path="/register" element={!user ? <Register /> : <Navigate to="/dashboard" />} />
+                <Route path="/chat" element={getAuthenticatedComponent(Chat)} />
+                <Route path="/dashboard" element={getAuthenticatedComponent(Dashboard)} />
+                <Route path="/uploads" element={getAuthenticatedComponent(ItemUploadForm)} />
                 <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
             </Routes>
             <Footer />
