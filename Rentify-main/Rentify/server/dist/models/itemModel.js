@@ -4,8 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const uuid_1 = require("uuid"); // Import UUID library for generating unique IDs
 const ItemSchema = new mongoose_1.default.Schema({
-    itemId: { type: String, unique: true },
+    itemId: { type: String, unique: true, default: uuid_1.v4 }, // Auto-generate unique itemId
     ownerId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User' },
     title: { type: String, required: true },
     description: { type: String, required: true },
