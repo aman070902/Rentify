@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import ItemCard from "../components/ItemCard";
 
 interface Product {
-  id: number;
+  _id: number; // Updated to reflect MongoDB's ObjectId
   name: string;
   description: string;
   price: number;
-  image: string;
+  imageUrl?: string; // Optional since some items may not have an image
 }
 
 interface User {
@@ -15,37 +15,26 @@ interface User {
 }
 
 interface DashboardProps {
-  user: User;  // Accepts user as a prop
+  user: User; // Accepts user as a prop
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ user }) => {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: 1,
-      name: "Laptop",
-      description: "High-performance laptop",
-      price: 1000,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "Camera",
-      description: "DSLR camera for high-quality photos",
-      price: 600,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 3,
-      name: "Bicycle",
-      description: "Mountain bike for outdoor enthusiasts",
-      price: 200,
-      image: "https://via.placeholder.com/150",
-    },
-  ]);
+  const [products, setProducts] = useState<Product[]>([]); // No sample items
 
+  // Fetch items from the database
   useEffect(() => {
-    console.log("User data:", user);
-  }, [user]);
+    const fetchItems = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/items"); // Adjust API endpoint as needed
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error("Failed to fetch items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []); // Empty dependency array ensures this runs once on component mount
 
   return (
     <div className="dashboard">
@@ -58,9 +47,22 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       <div className="column items-feed">
         <h2>Items on Rent</h2>
         <div className="items-container">
-          {products.map(product => (
-            <ItemCard key={product.id} product={product} />
-          ))}
+          {products.length > 0 ? (
+            products.map(product => (
+              <ItemCard 
+                key={product._id} 
+                product={{
+                  id: product._id,
+                  name: product.name,
+                  description: product.description,
+                  price: product.price,
+                  image: product.imageUrl || "https://via.placeholder.com/150",
+                }} 
+              />
+            ))
+          ) : (
+            <p>No items available.</p>
+          )}
         </div>
       </div>
     </div>
@@ -68,3 +70,4 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
 };
 
 export default Dashboard;
+

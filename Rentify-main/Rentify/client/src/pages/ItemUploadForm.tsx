@@ -4,9 +4,7 @@ interface ItemFormData {
   title: string;
   description: string;
   category: string;
-  subtype: string;
-  bidding: boolean;
-  image: File | null;
+  price: number;
 }
 
 const ItemUploadForm: React.FC = () => {
@@ -14,62 +12,88 @@ const ItemUploadForm: React.FC = () => {
     title: "",
     description: "",
     category: "",
-    subtype: "",
-    bidding: false,
-    image: null,
+    price: 0,
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
 
-    if (type === "checkbox") {
-      const { checked } = e.target as HTMLInputElement;
-      setFormData({ ...formData, [name]: checked });
-    } else if (type === "file") {
-      setFormData({ ...formData, image: (e.target as HTMLInputElement).files![0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
+    // Handle numeric input for price
+    setFormData({
+      ...formData,
+      [name]: name === "price" ? parseFloat(value) || 0 : value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3001/api/items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        console.log("Item uploaded successfully!");
+        setFormData({ title: "", description: "", category: "", price: 0 }); // Reset the form
+      } else {
+        console.error("Failed to upload item");
+      }
+    } catch (error) {
+      console.error("Error uploading item:", error);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
-    // Here you might want to send formData to your backend server
-  };
-
   return (
-    <div className="form-center"> {/* This class applies the centering and styling from your CSS */}
+    <div className="form-center"> {/* Centering and styling */}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Title:</label>
-          <input type="text" name="title" value={formData.title} onChange={handleInputChange} required />
+          <input
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            required
+          />
         </div>
         <div className="form-group">
           <label>Description:</label>
-          <textarea name="description" value={formData.description} onChange={handleInputChange} required />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            required
+          />
         </div>
         <div className="form-group">
           <label>Category:</label>
-          <select name="category" value={formData.category} onChange={handleInputChange} required>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            required
+          >
             <option value="">Select a category</option>
-            <option value="electronics">Electronics</option>
-            <option value="furniture">Furniture</option>
-            <option value="clothing">Clothing</option>
-            <option value="vehicles">Vehicles</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Vehicles">Vehicles</option>
           </select>
         </div>
         <div className="form-group">
-          <label>Subtype:</label>
-          <input type="text" name="subtype" value={formData.subtype} onChange={handleInputChange} />
-        </div>
-        <div className="form-group">
-          <label>Bidding:</label>
-          <input type="checkbox" name="bidding" checked={formData.bidding} onChange={handleInputChange} />
-        </div>
-        <div className="form-group">
-          <label>Upload Image:</label>
-          <input type="file" name="image" onChange={handleInputChange} required />
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+            required
+          />
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -78,3 +102,4 @@ const ItemUploadForm: React.FC = () => {
 };
 
 export default ItemUploadForm;
+
