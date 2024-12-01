@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Chat from "./pages/Chat";
+import Chat from "./pages/Chatroom";
 import Dashboard from "./pages/Dashboard";
 import ItemUploadForm from "./pages/ItemUploadForm";
 import "./App.css";

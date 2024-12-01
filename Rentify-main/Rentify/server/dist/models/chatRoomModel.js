@@ -4,11 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const ChatRoomSchema = new mongoose_1.default.Schema({
-    chatRoomId: { type: String, unique: true },
-    itemId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'Item' },
-    createdDate: { type: Date, default: Date.now },
-    isActive: { type: Boolean, default: true },
+const ChatroomSchema = new mongoose_1.default.Schema({
+    itemId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "Item", required: true },
+    users: [{ type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", required: true }],
+    messages: [
+        {
+            sender: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User", required: true },
+            content: { type: String, required: true },
+            timestamp: { type: Date, default: Date.now },
+        },
+    ],
 });
-const ChatRoom = mongoose_1.default.model('ChatRoom', ChatRoomSchema);
-exports.default = ChatRoom;
+const Chatroom = mongoose_1.default.model("Chatroom", ChatroomSchema);
+exports.default = Chatroom;

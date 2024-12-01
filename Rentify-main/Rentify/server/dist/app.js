@@ -8,6 +8,7 @@ const db_1 = require("./config/db");
 const dotenv_1 = __importDefault(require("dotenv"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const itemRoutes_1 = __importDefault(require("./routes/itemRoutes"));
+const chatroomRoutes_1 = __importDefault(require("./routes/chatroomRoutes"));
 const searchRoutes_1 = __importDefault(require("./routes/searchRoutes")); // Import the search route
 const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 });
 app.use('/auth', authRoutes_1.default);
 app.use('/api/items', itemRoutes_1.default);
+app.use("/api/chatrooms", chatroomRoutes_1.default);
 app.use('/api', searchRoutes_1.default); // Register the search route
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
