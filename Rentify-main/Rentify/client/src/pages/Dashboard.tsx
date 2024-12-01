@@ -14,7 +14,11 @@ interface User {
   email: string;
 }
 
-const Dashboard = ({ user }: { user: User }) => {
+interface DashboardProps {
+  user: User;  // Accepts user as a prop
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ user }) => {
   const [products, setProducts] = useState<Product[]>([
     {
       id: 1,
@@ -41,30 +45,20 @@ const Dashboard = ({ user }: { user: User }) => {
 
   useEffect(() => {
     console.log("User data:", user);
-    // Placeholder fetch logic for dynamic content if needed
   }, [user]);
 
   return (
     <div className="dashboard">
-      {/* User Info Column */}
       <div className="column user-info">
         <h2>User Information</h2>
-        <p>
-          <strong>Username:</strong> {user.username}
-        </p>
-        <p>
-          <strong>Email:</strong> {user.email}
-        </p>
-        <p>
-          <strong>Saved Posts:</strong> None (for now)
-        </p>
+        <p><strong>Username:</strong> {user.username}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Saved Posts:</strong> None (for now)</p>
       </div>
-
-      {/* Items on Rent Column */}
       <div className="column items-feed">
         <h2>Items on Rent</h2>
         <div className="items-container">
-          {products.map((product) => (
+          {products.map(product => (
             <ItemCard key={product.id} product={product} />
           ))}
         </div>

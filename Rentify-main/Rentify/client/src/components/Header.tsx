@@ -31,6 +31,7 @@ const Header: React.FC<HeaderProps> = ({ user, setUser }) => {
             <>
               <li><Link to="/chat">Chat</Link></li>
               <li><Link to="/dashboard">Dashboard</Link></li>
+              <li><Link to="/uploads">Uploads</Link></li>
               <li
                 style={{ marginLeft: "auto", cursor: "pointer" }}
                 onClick={handleLogout}

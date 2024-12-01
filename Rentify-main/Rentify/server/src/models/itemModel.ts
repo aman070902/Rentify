@@ -11,6 +11,9 @@ const ItemSchema = new mongoose.Schema({
   status: { type: String, default: 'Available' },
 });
 
+// Add a text index for efficient search on title and description
+ItemSchema.index({ title: 'text', description: 'text' });
+
 const Item = mongoose.model('Item', ItemSchema);
 export default Item;
 

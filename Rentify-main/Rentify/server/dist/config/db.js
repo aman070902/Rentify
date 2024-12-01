@@ -13,31 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectDB = void 0;
-
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
-
-// Load environment variables
+//for loading environment variable
 dotenv_1.default.config();
-
-// Debug to check MONGO_URI
-console.log('MONGO_URI:', process.env.MONGO_URI);
-
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (!process.env.MONGO_URI) {
-            throw new Error('MONGO_URI is not defined in the environment variables.');
-        }
-
-        const conn = yield mongoose_1.default.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-
-
-        
+        const conn = yield mongoose_1.default.connect(process.env.MONGO_URI || '');
         console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
+    }
+    catch (error) {
         console.error(`Error: ${error.message}`);
         process.exit(1); // Exit process with failure
     }

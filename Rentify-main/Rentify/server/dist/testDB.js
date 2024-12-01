@@ -1,18 +1,22 @@
 "use strict";
-
-const dotenv = require('dotenv');
-dotenv.config({ path: 'C:/Users/ashut/Desktop/E81 CSE 503S/Rentify Project/Rentify-main/Rentify/server/.env' }); // Explicit path
-
-const { connectDB } = require('./config/db');
-
-const testConnection = async () => {
-  try {
-    console.log('MONGO_URI:', process.env.MONGO_URI); // Debug MONGO_URI
-    await connectDB();
-    console.log('Test connection successful!');
-  } catch (error) {
-    console.error(`Test connection failed:`, error);
-  }
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const db_1 = require("./config/db");
+const testConnection = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield (0, db_1.connectDB)();
+        console.log('Test connection successful!');
+    }
+    catch (error) {
+        console.error(`Test connection failed:`, error);
+    }
+});
 testConnection();
