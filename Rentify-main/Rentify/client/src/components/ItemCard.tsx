@@ -69,7 +69,7 @@ const ItemCard = ({ product, user }: ItemCardProps) => {
       socket.emit('send_bid', { roomId: product.id.toString(), bid: bidMessage });
       inputElement.value = ''; // Clear the input
     } else {
-      console.log('No bid amount entered');
+      alert('Please enter a valid bid amount.');
     }
   };
 
@@ -79,21 +79,40 @@ const ItemCard = ({ product, user }: ItemCardProps) => {
         display: 'flex',
         justifyContent: 'space-between',
         border: '1px solid #ccc',
-        padding: '10px',
-        marginBottom: '10px',
+        borderRadius: '8px',
+        padding: '15px',
+        marginBottom: '15px',
+        backgroundColor: '#f9f9f9',
       }}
     >
       <div>
         <h3>{product.name}</h3>
         <p>{product.description}</p>
-        <p>Price: ${product.price}</p>
+        <p><strong>Price:</strong> ${product.price}</p>
         <input
           id={`bid-input-${product.id}`}
           type="number"
           placeholder="Enter your bid"
-          style={{ marginBottom: '10px' }}
+          style={{
+            marginBottom: '10px',
+            padding: '5px',
+            borderRadius: '4px',
+            border: '1px solid #ccc',
+          }}
         />
-        <button onClick={handleBid}>Place Bid</button>
+        <button
+          onClick={handleBid}
+          style={{
+            padding: '5px 10px',
+            backgroundColor: '#007BFF',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Place Bid
+        </button>
       </div>
 
       <div
@@ -101,13 +120,33 @@ const ItemCard = ({ product, user }: ItemCardProps) => {
           flex: 1,
           marginLeft: '20px',
           borderLeft: '1px solid #ccc',
-          paddingLeft: '10px',
+          paddingLeft: '15px',
+          overflowY: 'auto',
+          maxHeight: '150px',
         }}
       >
         <h4>Bids</h4>
-        <ul>
+        <ul
+          style={{
+            listStyleType: 'none',
+            padding: '0',
+            margin: '0',
+            fontSize: '14px',
+            lineHeight: '1.6',
+          }}
+        >
           {bids.length > 0 ? (
-            bids.map((bid, index) => <li key={index}>{bid}</li>)
+            bids.map((bid, index) => (
+              <li
+                key={index}
+                style={{
+                  padding: '5px',
+                  borderBottom: '1px solid #ddd',
+                }}
+              >
+                {bid}
+              </li>
+            ))
           ) : (
             <li>No bids yet.</li>
           )}
@@ -118,3 +157,4 @@ const ItemCard = ({ product, user }: ItemCardProps) => {
 };
 
 export default ItemCard;
+
